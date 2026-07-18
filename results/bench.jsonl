@@ -8,3 +8,5 @@
 {"time": "2026-07-18T14:45:04Z", "label": "tight/100m", "times": [22.5970, 24.7302, 34.1023], "median": 24.7302, "input_bytes": 2629057896, "git": "66b0a0c6"}
 {"time": "2026-07-18T15:26:59Z", "label": "fastio/100m", "times": [20.9369, 17.7283, 16.7662], "median": 17.7283, "input_bytes": 2629057896, "git": "2e2dc057"}
 {"time": "2026-07-18T15:39:20Z", "label": "fastio/100m", "times": [9.5487, 9.1667, 9.2318], "median": 9.2318, "input_bytes": 2629057896, "git": "2e2dc057"}
+{"time": "2026-07-18T17:03:21Z", "label": "03-fasthash/100m", "times": [6.6113, 6.1196, 5.9807], "median": 6.1196, "input_bytes": 2629057896, "git": "cf1690ac"}
+{"time": "2026-07-18T17:07:56Z", "label": "03-fasthash/100m", "times": [3.8235, 3.9019, 3.6874], "median": 3.8235, "input_bytes": 2629057896, "git": "cf1690ac"}
