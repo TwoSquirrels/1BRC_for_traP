@@ -112,6 +112,14 @@ pub fn build(b: *std.Build) void {
     const download = b.addRunArtifact(download_exe);
     download.has_side_effects = true;
     b.step("download", "公開データセットをダウンロードして展開する").dependOn(&download.step);
+
+    // zig build asm — 提出ターゲットの逆アセンブリと静的解析 (llvm-mca) を出す
+    const asm_exe = addTool(b, "asm", target);
+    const asm_run = b.addRunArtifact(asm_exe);
+    asm_run.addArgs(&.{ sol, source_path });
+    asm_run.addArtifactArg(release_exe);
+    asm_run.has_side_effects = true;
+    b.step("asm", "sapphirerapids 向けアセンブリを解析する").dependOn(&asm_run.step);
 }
 
 fn addSolution(

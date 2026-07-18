@@ -46,6 +46,7 @@ mise run submit -- -Ddry       # 提出内容の確認 (dry-run)
 mise run submit                # release 検査を通してから API へ提出
 mise run leaderboard           # 現在の public リーダーボードを表示
 mise run download              # 公開データセット (~100m) を datasets/ に取得・展開
+mise run asm                   # sapphirerapids の逆アセンブリを work/asm/ に保存し、関数一覧とホット関数を表示。サイクル見積もりも可能
 ```
 
 ソリューションを増やすときは `src/<名前>.c` を置いて `-Dsol=<名前>` で選択します。

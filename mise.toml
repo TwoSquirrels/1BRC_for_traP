@@ -39,3 +39,7 @@ run = "zig build leaderboard"
 [tasks.download]
 description = "公開データセット (1m/10m/100m) をダウンロードして展開する"
 run = "zig build download"
+
+[tasks.asm]
+description = "sapphirerapids 向けアセンブリを解析する"
+run = "zig build asm"
