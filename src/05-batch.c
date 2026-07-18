@@ -1,9 +1,8 @@
-// 03-fasthash を土台にした並列化版 (対策 3)。03 からの差分:
-//   - ファイルを行境界でスレッド数分に分割し、各スレッドが専用のハッシュ表と
-//     集計配列を持って独立に走る (共有状態なし・ロックなし)。
-//   - 集計後、チャンネル名で突き合わせてスレッド 0 の表へマージする。
-//     マージ対象は高々 10,000 チャンネル × 12 ヶ月 × スレッド数なので誤差。
-//   - スレッド数は sched_getaffinity から取る (taskset や本番の 8 vCPU を尊重)。
+// 04-parallel を土台にしたハッシュレイテンシ隠蔽版。04 からの差分:
+//   - 行をバッチ (8 行) 単位で処理する。前段でパースとハッシュ計算だけを済ませて
+//     表スロットをプリフェッチし、後段でまとめて照合・集計する。
+//     「ハッシュ計算 → そのアドレスをロード」という毎行の直列依存鎖 (アブレーションで
+//     全体の 56% を占めた) を行間で重ね合わせ、L2 レイテンシを覆い隠すのが狙い。
 #define _GNU_SOURCE  // sched_getaffinity
 #include <fcntl.h>
 #include <inttypes.h>
@@ -109,25 +108,36 @@ static uint64_t mix(uint64_t h) {  // MurmurHash3 の finalizer 前半
     return h * 0xFF51'AFD7'ED55'8CCDull;
 }
 
-static int channel_id(Ctx *c, const char *channel, uint32_t len) {
-    // 先頭 8 バイトは名前の外 (',' 以降) を含み得るのでマスクして決定的にする。
-    // 末尾 8 バイトは len >= 8 なら名前内で完結する。名前の長短は行順にランダムなので、
-    // 分岐ではなく cmov に落ちる形 (三項演算子) で書く。
-    uint32_t head_len = len < 8 ? len : 8;
-    uint64_t first8 = load8(channel) & (~0ull >> (64 - 8 * head_len));
-    uint64_t last8 = len >= 8 ? load8(channel + len - 8) : first8;
+// パース済みの 1 行分。前段 (パース + ハッシュ) と後段 (照合 + 集計) の受け渡しに使う
+typedef struct {
+    const char *channel;
+    uint64_t first8, last8;
+    uint32_t slot, channel_len, ts8, len, stamps;
+} Row;
 
-    uint32_t slot = (uint32_t)(mix(first8 ^ (last8 * 0x9E37'79B9'7F4A'7C15ull) ^ len) >> 32) & (TABLE_SIZE - 1);
-    for (;; slot = (slot + 1) & (TABLE_SIZE - 1)) {
+// 先頭 8 バイトは名前の外 (',' 以降) を含み得るのでマスクして決定的にする。
+// 末尾 8 バイトは len >= 8 なら名前内で完結する。名前の長短は行順にランダムなので、
+// 分岐ではなく cmov に落ちる形 (三項演算子) で書く。
+static void hash_channel(Row *r) {
+    uint32_t head_len = r->channel_len < 8 ? r->channel_len : 8;
+    r->first8 = load8(r->channel) & (~0ull >> (64 - 8 * head_len));
+    r->last8 = r->channel_len >= 8 ? load8(r->channel + r->channel_len - 8) : r->first8;
+    r->slot = (uint32_t)(mix(r->first8 ^ (r->last8 * 0x9E37'79B9'7F4A'7C15ull) ^ r->channel_len) >> 32) &
+        (TABLE_SIZE - 1);
+}
+
+static int channel_id(Ctx *c, const Row *r) {
+    uint32_t len = r->channel_len;
+    for (uint32_t slot = r->slot;; slot = (slot + 1) & (TABLE_SIZE - 1)) {
         Slot *e = &c->table[slot];
         if (e->id < 0) {
-            memcpy(c->names[c->channel_count], channel, len);
+            memcpy(c->names[c->channel_count], r->channel, len);
             c->names[c->channel_count][len] = '\0';
-            *e = (Slot){.first8 = first8, .last8 = last8, .id = c->channel_count, .len = len};
+            *e = (Slot){.first8 = r->first8, .last8 = r->last8, .id = c->channel_count, .len = len};
             return c->channel_count++;
         }
-        if (e->len == len && e->first8 == first8 && e->last8 == last8 &&
-            (len <= 16 || memcmp(c->names[e->id] + 8, channel + 8, len - 16) == 0)) {
+        if (e->len == len && e->first8 == r->first8 && e->last8 == r->last8 &&
+            (len <= 16 || memcmp(c->names[e->id] + 8, r->channel + 8, len - 16) == 0)) {
             return e->id;
         }
     }
@@ -143,45 +153,74 @@ static uint32_t parse8(const char *p) {
     return (uint32_t)x;
 }
 
-// 1 行を処理して次の行の先頭を返す。行は '\n' で終端されていること。
-static const char *process_row(Ctx *c, const char *p) {
+// 1 行をパースして r に詰め、次の行の先頭を返す。行は '\n' で終端されていること
+static const char *parse_row(Row *r, const char *p) {
     MCA_BEGIN("parse");
-    uint32_t ts8 = parse8(p);  // 10 桁固定の先頭 8 桁 = ts / 100
-    const char *channel = p + 11;  // 10 桁固定 + ','
-    const char *q = memchr(channel, ',', MAX_CHANNEL_LEN + 1);
-    uint32_t channel_len = (uint32_t)(q - channel);
+    r->ts8 = parse8(p);  // 10 桁固定の先頭 8 桁 = ts / 100
+    r->channel = p + 11;  // 10 桁固定 + ','
+    const char *q = memchr(r->channel, ',', MAX_CHANNEL_LEN + 1);
+    r->channel_len = (uint32_t)(q - r->channel);
     q++;
     uint32_t len = 0;
     for (uint32_t d; (d = (uint32_t)(*q - '0')) <= 9; q++) len = len * 10 + d;
+    r->len = len;
     q++;  // ','
     uint32_t stamps = 0;
     for (uint32_t d; (d = (uint32_t)(*q - '0')) <= 9; q++) stamps = stamps * 10 + d;
+    r->stamps = stamps;
     MCA_END("parse");
+    return q + 1;  // '\n' の次 (最終行も LF 終端の保証)
+}
 
+static void update_row(Ctx *c, const Row *r) {
     // min_len は UINT32_MAX で事前初期化してあるので初回判定の分岐が要らない。
     // min/max の更新は集計が温まるとほぼ起きない = ほぼ常に不成立の予測well な分岐なので、
     // cmov (毎行ロード→比較→ストアの依存鎖) より分岐のほうが速い (実測 2.50 vs 2.74 秒)
-    Stats *s = &c->stats[channel_id(c, channel, channel_len)][month_of(ts8)];
-    if (len < s->min_len) s->min_len = len;
-    if (len > s->max_len) s->max_len = len;
-    s->total_len += len;
+    Stats *s = &c->stats[channel_id(c, r)][month_of(r->ts8)];
+    if (r->len < s->min_len) s->min_len = r->len;
+    if (r->len > s->max_len) s->max_len = r->len;
+    s->total_len += r->len;
     s->count++;
-    s->total_stamps += stamps;
-    return q + 1;  // '\n' の次 (最終行も LF 終端の保証)
+    s->total_stamps += r->stamps;
 }
+
+// 1 行だけ処理する互換ヘルパ (最終行の別バッファ処理用)
+static const char *process_row(Ctx *c, const char *p) {
+    Row r;
+    const char *next = parse_row(&r, p);
+    hash_channel(&r);
+    update_row(c, &r);
+    return next;
+}
+
+constexpr int BATCH = 8;
 
 static void *worker(void *arg) {
     Ctx *c = arg;
     init_ctx(c);  // 表の初期化 (100 万書き込み超) も並列化し、ファーストタッチも自スレッドで行う
     const char *p = c->begin;
-    while (p < c->end) p = process_row(c, p);
+    Row rows[BATCH];
+    while (p < c->end) {
+        // 前段: パース + ハッシュ計算 + 表スロットのプリフェッチだけを済ませる。
+        // 後段が表を引く頃にはプリフェッチが届いており、「ハッシュ → 表ロード」の
+        // 直列依存鎖 (アブレーションで 56%) が行間で重なって L2 レイテンシが隠れる
+        int n = 0;
+        while (n < BATCH && p < c->end) {
+            p = parse_row(&rows[n], p);
+            hash_channel(&rows[n]);
+            __builtin_prefetch(&c->table[rows[n].slot], 0, 3);
+            n++;
+        }
+        for (int i = 0; i < n; i++) update_row(c, &rows[i]);
+    }
     return nullptr;
 }
 
 static void merge_into_first(Ctx *dst, const Ctx *src) {
     for (int sc = 0; sc < src->channel_count; sc++) {
-        uint32_t len = (uint32_t)strlen(src->names[sc]);
-        int dc = channel_id(dst, src->names[sc], len);
+        Row r = {.channel = src->names[sc], .channel_len = (uint32_t)strlen(src->names[sc])};
+        hash_channel(&r);
+        int dc = channel_id(dst, &r);
         for (int m = 0; m < MONTHS; m++) {
             const Stats *s = &src->stats[sc][m];
             if (s->count == 0) continue;
