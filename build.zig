@@ -2,7 +2,7 @@ const std = @import("std");
 
 // src/*.c の 1 ファイルが 1 ソリューション。-Dsol で選択し、-Ddata でデータセットを選ぶ。
 // tools/*.zig は検証・計測などの補助ツールで、各ステップから実行される。
-const default_solution = "naive";
+const default_solution = "00-naive";
 // -O3: zig の ReleaseFast は C ソースへ -O2 を渡すため明示で上書きする (後勝ち)
 const c_flags = [_][]const u8{ "-std=c23", "-Wall", "-Wextra", "-O3" };
 // perf 用にリリースビルドでもデバッグ情報とフレームポインタを残す (速度への影響はほぼゼロ)
