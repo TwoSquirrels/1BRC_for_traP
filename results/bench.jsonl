@@ -10,3 +10,11 @@
 {"time": "2026-07-18T15:39:20Z", "label": "fastio/100m", "times": [9.5487, 9.1667, 9.2318], "median": 9.2318, "input_bytes": 2629057896, "git": "2e2dc057"}
 {"time": "2026-07-18T17:03:21Z", "label": "03-fasthash/100m", "times": [6.6113, 6.1196, 5.9807], "median": 6.1196, "input_bytes": 2629057896, "git": "cf1690ac"}
 {"time": "2026-07-18T17:07:56Z", "label": "03-fasthash/100m", "times": [3.8235, 3.9019, 3.6874], "median": 3.8235, "input_bytes": 2629057896, "git": "cf1690ac"}
+{"time": "2026-07-18T18:37:31Z", "label": "04-parallel/100m", "times": [3.6484, 3.3602, 2.8736], "median": 3.3602, "input_bytes": 2629057896, "git": "d23afa88"}
+{"time": "2026-07-18T18:38:16Z", "label": "04-parallel/100m", "times": [3.5542, 3.1161, 3.4296], "median": 3.4296, "input_bytes": 2629057896, "git": "d23afa88"}
+{"time": "2026-07-18T18:41:28Z", "label": "04-parallel/100m", "times": [2.8288, 2.8931, 2.8583], "median": 2.8583, "input_bytes": 2629057896, "git": "d23afa88"}
+{"time": "2026-07-18T18:50:07Z", "label": "04-parallel/100m", "times": [2.6453, 2.4445, 2.4328], "median": 2.4445, "input_bytes": 2629057896, "git": "d23afa88"}
+{"time": "2026-07-18T18:52:52Z", "label": "04-parallel/100m", "times": [2.9015, 2.6766, 2.7392], "median": 2.7392, "input_bytes": 2629057896, "git": "d23afa88"}
+{"time": "2026-07-18T18:53:12Z", "label": "04-parallel/100m", "times": [2.5961, 2.8024, 3.0141], "median": 2.8024, "input_bytes": 2629057896, "git": "d23afa88"}
+{"time": "2026-07-18T18:53:20Z", "label": "04-parallel/100m", "times": [2.6033, 2.2236, 2.4953], "median": 2.4953, "input_bytes": 2629057896, "git": "d23afa88"}
+{"time": "2026-07-18T18:54:18Z", "label": "04-parallel/100m", "times": [3.3932, 3.2645, 2.8776], "median": 3.2645, "input_bytes": 2629057896, "git": "d23afa88"}
