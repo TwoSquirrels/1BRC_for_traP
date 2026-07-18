@@ -4,3 +4,5 @@
 {"time": "2026-07-18T10:45:47Z", "label": "naive/1m", "times": [0.4130, 0.3876, 0.3801], "median": 0.3876, "input_bytes": 26290086, "git": null}
 {"time": "2026-07-18T11:17:45Z", "label": "naive/edge", "times": [0.0064, 0.0060, 0.0064], "median": 0.0064, "input_bytes": 895, "git": null}
 {"time": "2026-07-18T11:51:09Z", "label": "naive/100m", "times": [25.6840, 22.9497, 21.9353], "median": 22.9497, "input_bytes": 2629057896, "git": null}
+{"time": "2026-07-18T14:40:00Z", "label": "tight/100m", "times": [24.8750, 22.6787, 23.4728], "median": 23.4728, "input_bytes": 2629057896, "git": "66b0a0c6"}
+{"time": "2026-07-18T14:45:04Z", "label": "tight/100m", "times": [22.5970, 24.7302, 34.1023], "median": 24.7302, "input_bytes": 2629057896, "git": "66b0a0c6"}
