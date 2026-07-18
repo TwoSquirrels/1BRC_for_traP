@@ -71,7 +71,7 @@ static uint64_t load8(const char *p) {
     return x;
 }
 
-[[unsequenced]] static uint64_t mix(uint64_t h) {  // MurmurHash3 の finalizer 前半
+static uint64_t mix(uint64_t h) {  // MurmurHash3 の finalizer 前半
     h ^= h >> 33;
     return h * 0xFF51'AFD7'ED55'8CCDull;
 }

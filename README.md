@@ -39,12 +39,15 @@ echo 'ONEBRC_ACCESS_KEY=...' > .env
 mise run verify                # 実行して出力を検証 (既定: naive を 1m で)
 mise run verify -- -Ddata=10m  # データセット指定 (1m / 10m / 100m / edge)
 mise run bench -- -Ddata=100m  # 本番方式の計測: キャッシュ温め → 8 CPU 固定で 3 回実行 → 毎回検証 → 中央値を results/ に記録
+mise run bench -- -Dsol=10-statprefetch -Dbaseline=09-numfast -Ddata=100m
+                               # A/B 比較: run ごとに 2 解法を交互実行して熱ドリフトを均等化
 mise run perf                  # perf record によるサンプリングプロファイル
 mise run gen                   # エッジケースの入力・期待出力を tests/ に生成
 mise run release               # 提出用バイナリを zig-out/release/ に作り、提出制限を検査
 mise run submit -- -Ddry       # 提出内容の確認 (dry-run)
 mise run submit                # release 検査を通してから API へ提出
 mise run leaderboard           # 現在の public リーダーボードを表示
+mise run status                # 自分の提出の判定状況を表示 (-Did=<uuid> で単体、-Dlimit で件数)
 mise run download              # 公開データセット (~100m) を datasets/ に取得・展開
 mise run asm                   # sapphirerapids の逆アセンブリを work/asm/ に保存し、関数一覧とホット関数を表示。サイクル見積もりも可能
 ```

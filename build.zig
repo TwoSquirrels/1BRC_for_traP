@@ -3,8 +3,10 @@ const std = @import("std");
 // src/*.c の 1 ファイルが 1 ソリューション。-Dsol で選択し、-Ddata でデータセットを選ぶ。
 // tools/*.zig は検証・計測などの補助ツールで、各ステップから実行される。
 const default_solution = "00-naive";
-// -O3: zig の ReleaseFast は C ソースへ -O2 を渡すため明示で上書きする (後勝ち)
-const c_flags = [_][]const u8{ "-std=c23", "-Wall", "-Wextra", "-O3" };
+// -O3: zig の ReleaseFast は C ソースへ -O2 を渡すため明示で上書きする (後勝ち)。
+// -Werror: zig build は警告を表示しないため、エラー化して可視化する
+// ([[unsequenced]] が黙って無視されていた実績への対策)
+const c_flags = [_][]const u8{ "-std=c23", "-Wall", "-Wextra", "-Werror", "-O3" };
 // perf 用にリリースビルドでもデバッグ情報とフレームポインタを残す (速度への影響はほぼゼロ)
 const profile_flags = c_flags ++ [_][]const u8{ "-g", "-fno-omit-frame-pointer" };
 
@@ -14,6 +16,9 @@ pub fn build(b: *std.Build) void {
     const sol = b.option([]const u8, "sol", "ソリューション名 (src/<sol>.c)") orelse default_solution;
     const data = b.option([]const u8, "data", "データセット: 1m | 10m | 100m | edge") orelse "1m";
     const dry = b.option(bool, "dry", "submit を dry-run にする") orelse false;
+    const baseline = b.option([]const u8, "baseline", "bench の A/B 比較相手 (src/<name>.c、run ごとに交互実行)");
+    const status_id = b.option([]const u8, "id", "status で表示する提出 ID (省略時は最近の一覧)");
+    const status_limit = b.option(usize, "limit", "status の一覧表示件数 (既定: 5)") orelse 5;
     // 本番 (r7i.2xlarge = Sapphire Rapids, AVX-512 対応) 向け。手元の CPU では実行できない
     // 点に注意 (手元検証は native ビルド、提出物の最終確認は本番の Public 計測に委ねる)。
     const release_cpu = b.option([]const u8, "release-cpu", "提出用バイナリの CPU (既定: sapphirerapids)") orelse "sapphirerapids";
@@ -57,8 +62,14 @@ pub fn build(b: *std.Build) void {
     bench.addArtifactArg(verify_exe);
     bench.addArgs(&.{ "--input", input_path, "--expected", expected_path });
     bench.addArgs(&.{ "--label", b.fmt("{s}/{s}", .{ sol, data }) });
+    if (baseline) |base| {
+        const base_exe = addSolution(b, base, b.fmt("src/{s}.c", .{base}), target, optimize, &profile_flags);
+        bench.addArg("--bin2");
+        bench.addArtifactArg(base_exe);
+        bench.addArgs(&.{ "--label2", b.fmt("{s}/{s}", .{ base, data }) });
+    }
     bench.has_side_effects = true;
-    b.step("bench", "計測して結果を results/ に記録する").dependOn(&bench.step);
+    b.step("bench", "計測して結果を results/ に記録する (-Dbaseline=<sol> で A/B 交互実行)").dependOn(&bench.step);
 
     // zig build perf — サンプリングプロファイル
     const perf = b.addRunArtifact(perf_exe);
@@ -107,6 +118,17 @@ pub fn build(b: *std.Build) void {
     const leaderboard = b.addRunArtifact(leaderboard_exe);
     leaderboard.has_side_effects = true;
     b.step("leaderboard", "リーダーボードを表示する").dependOn(&leaderboard.step);
+
+    // zig build status — 自分の提出の判定状況を表示 (-Did=<uuid> で単体、-Dlimit で件数)
+    const status_exe = addTool(b, "status", target);
+    const status = b.addRunArtifact(status_exe);
+    if (status_id) |sid| {
+        status.addArgs(&.{ "--id", sid });
+    } else {
+        status.addArgs(&.{ "--limit", b.fmt("{d}", .{status_limit}) });
+    }
+    status.has_side_effects = true;
+    b.step("status", "提出の判定状況を表示する").dependOn(&status.step);
 
     // zig build download — 公開データセット (1m/10m/100m) を datasets/ に取得・展開
     const download = b.addRunArtifact(download_exe);

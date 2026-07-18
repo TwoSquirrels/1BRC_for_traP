@@ -5,7 +5,8 @@
 //     先頭 1 桁は常に '1'、月境界は 86400 = 864 × 100 の倍数なので下 2 桁は
 //     月判定に影響しない。チャンネル開始位置も 11 で確定する。
 //   - 月境界テーブルは constexpr でコンパイル時に確定させ、month_of は
-//     [[unsequenced]] な純粋関数として最適化器に自由を与える (C23)
+//     純粋関数として最適化器に自由を与える (当初 [[unsequenced]] を付けたが
+//     Clang 未実装で警告つきで無視されるだけだったため撤去)
 // 今後: ハッシュ軽量化 (対策 2)、8 スレッド並列 (対策 3) を予定。
 #define _DEFAULT_SOURCE  // 厳密な -std=c23 でも madvise 等の POSIX/BSD 拡張を出す
 #include <fcntl.h>
@@ -45,7 +46,7 @@ static Stats stats[MAX_CHANNELS][MONTHS];
 static int32_t table[TABLE_SIZE];  // チャンネル名ハッシュ → チャンネル ID (-1 = 空)
 static int channel_count = 0;
 
-[[unsequenced]] static int month_of(uint32_t ts7) {
+static int month_of(uint32_t ts7) {
     for (int m = 0; m < MONTHS; m++) {
         if (ts7 < month_end[m]) return m;
     }

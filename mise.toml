@@ -36,6 +36,10 @@ run = "zig build submit"
 description = "リーダーボードを表示する"
 run = "zig build leaderboard"
 
+[tasks.status]
+description = "提出の判定状況を表示する"
+run = "zig build status"
+
 [tasks.download]
 description = "公開データセット (1m/10m/100m) をダウンロードして展開する"
 run = "zig build download"
