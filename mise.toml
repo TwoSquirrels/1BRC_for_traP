@@ -1,0 +1,41 @@
+[tools]
+zig = "0.16.0"
+
+[env]
+_.file = ".env"
+
+[tasks.run]
+description = "選択したソリューションを実行する"
+run = "zig build run"
+
+[tasks.verify]
+description = "実行して出力を検証する"
+run = "zig build verify"
+
+[tasks.bench]
+description = "計測して結果を results/ に記録する"
+run = "zig build bench"
+
+[tasks.perf]
+description = "perf record でプロファイルを取る"
+run = "zig build perf"
+
+[tasks.gen]
+description = "エッジケースの入力と期待出力を生成する"
+run = "zig build gen"
+
+[tasks.release]
+description = "提出用バイナリを作り制限を検査する"
+run = "zig build release"
+
+[tasks.submit]
+description = "提出する (-- -Ddry で dry-run)"
+run = "zig build submit"
+
+[tasks.leaderboard]
+description = "リーダーボードを表示する"
+run = "zig build leaderboard"
+
+[tasks.download]
+description = "公開データセット (1m/10m/100m) をダウンロードして展開する"
+run = "zig build download"

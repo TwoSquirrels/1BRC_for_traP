@@ -1,0 +1,6 @@
+.env
+.zig-cache/
+zig-out/
+datasets/
+tests/
+work/

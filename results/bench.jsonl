@@ -1,0 +1,6 @@
+{"time": "2026-07-18T19:12:50+09:00", "label": "naive/100m", "times": [37.4325, 25.1989, 28.4272], "median": 28.4272, "input_bytes": 2629057896, "git": null}
+{"time": "2026-07-18T10:41:30Z", "label": "naive/1m", "times": [0.6142, 1.1461, 0.4393], "median": 0.6142, "input_bytes": 26290086, "git": null}
+{"time": "2026-07-18T10:41:31Z", "label": "naive/edge", "times": [0.0067, 0.0100, 0.0060], "median": 0.0067, "input_bytes": 526, "git": null}
+{"time": "2026-07-18T10:45:47Z", "label": "naive/1m", "times": [0.4130, 0.3876, 0.3801], "median": 0.3876, "input_bytes": 26290086, "git": null}
+{"time": "2026-07-18T11:17:45Z", "label": "naive/edge", "times": [0.0064, 0.0060, 0.0064], "median": 0.0064, "input_bytes": 895, "git": null}
+{"time": "2026-07-18T11:51:09Z", "label": "naive/100m", "times": [25.6840, 22.9497, 21.9353], "median": 22.9497, "input_bytes": 2629057896, "git": null}
