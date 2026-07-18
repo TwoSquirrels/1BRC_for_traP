@@ -21,3 +21,5 @@
 {"time": "2026-07-18T20:43:24Z", "label": "07-fusedscan/100m", "times": [2.3052, 2.3555, 2.2444], "median": 2.3052, "input_bytes": 2629057896, "git": "20d0900c"}
 {"time": "2026-07-18T20:43:32Z", "label": "05-batch/100m", "times": [2.6393, 2.6071, 2.5936], "median": 2.6071, "input_bytes": 2629057896, "git": "20d0900c"}
 {"time": "2026-07-18T20:51:09Z", "label": "07-fusedscan/100m", "times": [2.0617, 2.5306, 2.2383], "median": 2.2383, "input_bytes": 2629057896, "git": "20d0900c"}
+{"time": "2026-07-18T21:13:00Z", "label": "08-multistream/100m", "times": [2.6596, 2.4875, 2.3394], "median": 2.4875, "input_bytes": 2629057896, "git": "2a6f1d2d"}
+{"time": "2026-07-18T21:13:08Z", "label": "07-fusedscan/100m", "times": [3.1130, 2.5383, 2.4037], "median": 2.5383, "input_bytes": 2629057896, "git": "2a6f1d2d"}

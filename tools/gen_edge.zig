@@ -20,6 +20,10 @@ const rows = [_]Row{
     // 8 桁以上の数値 (SWAR 一括パースの範囲外)。月合計が u32 に収まる保証の範囲で最大級の桁数
     .{ .ts = 1798761603, .channel = "edge/big-numbers", .length = 4_000_000_000, .stamps = 294_967_295 },
     .{ .ts = 1798761603, .channel = "edge/big-numbers", .length = 12345678, .stamps = 10000000 },
+    // 数値 2 フィールドが 8 バイト内に収まりつつ stamp_count が 3 桁以上 (低乗算経路の範囲外)
+    .{ .ts = 1798761604, .channel = "edge/mid-numbers", .length = 9, .stamps = 999 },
+    // 2 フィールド合計は 8 バイト超だが各フィールドは 7 桁以下 (個別 SWAR 一括パースの経路)
+    .{ .ts = 1798761605, .channel = "edge/mid-numbers", .length = 123456, .stamps = 1234 },
     .{ .ts = 1798761600, .channel = "edge/dup", .length = 50, .stamps = 5 },
     .{ .ts = 1798761600, .channel = "edge/dup", .length = 50, .stamps = 5 }, // 完全に同一の行
     .{ .ts = 1798761600, .channel = "edge/avg-round", .length = 1, .stamps = 0 }, // 平均 1.5 → 丸め確認
