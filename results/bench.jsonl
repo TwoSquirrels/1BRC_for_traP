@@ -6,3 +6,5 @@
 {"time": "2026-07-18T11:51:09Z", "label": "naive/100m", "times": [25.6840, 22.9497, 21.9353], "median": 22.9497, "input_bytes": 2629057896, "git": null}
 {"time": "2026-07-18T14:40:00Z", "label": "tight/100m", "times": [24.8750, 22.6787, 23.4728], "median": 23.4728, "input_bytes": 2629057896, "git": "66b0a0c6"}
 {"time": "2026-07-18T14:45:04Z", "label": "tight/100m", "times": [22.5970, 24.7302, 34.1023], "median": 24.7302, "input_bytes": 2629057896, "git": "66b0a0c6"}
+{"time": "2026-07-18T15:26:59Z", "label": "fastio/100m", "times": [20.9369, 17.7283, 16.7662], "median": 17.7283, "input_bytes": 2629057896, "git": "2e2dc057"}
+{"time": "2026-07-18T15:39:20Z", "label": "fastio/100m", "times": [9.5487, 9.1667, 9.2318], "median": 9.2318, "input_bytes": 2629057896, "git": "2e2dc057"}
