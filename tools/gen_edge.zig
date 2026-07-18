@@ -17,6 +17,9 @@ const rows = [_]Row{
     .{ .ts = 1830297599, .channel = "edge/year-end", .length = 5, .stamps = 0 }, // 2027-12-31T23:59:59
     .{ .ts = 1798761601, .channel = "a", .length = 1, .stamps = 1 }, // 最短チャンネル名・最小メッセージ長
     .{ .ts = 1798761602, .channel = max_channel, .length = 12345, .stamps = 99 },
+    // 8 桁以上の数値 (SWAR 一括パースの範囲外)。月合計が u32 に収まる保証の範囲で最大級の桁数
+    .{ .ts = 1798761603, .channel = "edge/big-numbers", .length = 4_000_000_000, .stamps = 294_967_295 },
+    .{ .ts = 1798761603, .channel = "edge/big-numbers", .length = 12345678, .stamps = 10000000 },
     .{ .ts = 1798761600, .channel = "edge/dup", .length = 50, .stamps = 5 },
     .{ .ts = 1798761600, .channel = "edge/dup", .length = 50, .stamps = 5 }, // 完全に同一の行
     .{ .ts = 1798761600, .channel = "edge/avg-round", .length = 1, .stamps = 0 }, // 平均 1.5 → 丸め確認
