@@ -1,8 +1,17 @@
-// 15-batch16 に「実行時学習の ID リナンバリング」を足した二相版。第 1 相で担当範囲の
-// 先頭 1/128 (本番なら約 100 万行/スレッド) を普通に処理しながら頻度を学び、ID を頻度
-// 降順に振り直して stats / names / 表を並べ替えてから残りを本走する。頻出チャンネルの
-// 集計行が stats 先頭の数 KB に密集して L1/L2 に安定するのが狙い。並べ替えはコールド
-// パス (数 ms)。サンプリングが Private で外れても遅くなるだけで正しさは不変。
+// 1BRC for traP — traQ 風 CSV (unix_timestamp,channel_path,message_length,stamp_count) を
+// チャンネル × 月ごとに min / avg / max / 件数 / スタンプ合計へ集計する。実装の全記録と
+// 考察は https://github.com/TwoSquirrels/1BRC_for_traP (consideration.md) にある。
+//
+// 骨格: 入力を mmap して 8 スレッドで範囲分割し、各行を自前の SWAR / SIMD でパースする。
+// 開番地ハッシュ表でチャンネルを厳密照合し (指紋 first8 / last8 / mid8 + 必要なら全バイト
+// 比較で衝突安全)、チャンネル × 月の集計へ反映する。表引きと集計のメモリ待ちは、行を
+// バッチに束ねてパース → 表 → 集計を 3 段のプリフェッチパイプラインで重ねて隠す。
+//
+// 二相の実行時学習: 第 1 相で担当範囲の先頭 1/128 (本番なら約 100 万行/スレッド) を普通に
+// 処理しながらチャンネルの出現頻度を学び、ID を頻度降順に振り直して stats / names / 表を
+// 並べ替えてから残りを本走する。頻出チャンネルの集計行が stats 先頭の数 KB に密集して
+// L1 / L2 に安定して住むのが狙い。並べ替えはコールドパス (数 ms)。サンプリングが Private
+// で外れても配置が最適でなくなるだけで、正しさは不変。
 #define _GNU_SOURCE  // sched_getaffinity
 #include <errno.h>
 #include <fcntl.h>
@@ -141,7 +150,7 @@ HOT_INLINE uint32_t swar10(uint64_t x) {
     return (uint32_t)((x * ((10'000ull << 32) | 1)) >> 32);
 }
 
-// 数字列 1 個を SWAR で一括変換し、区切り文字の次を返す (07 と同じ)。
+// 数字列 1 個を SWAR で一括変換し、区切り文字の次を返す。
 // 2 フィールド同時パースが 8 バイトに収まらなかったときのフォールバック専用
 static const char *parse_uint(const char *q, uint32_t *out) {
     uint64_t w = load8(q);
@@ -304,7 +313,7 @@ static void run_range(Ctx *c, const char *p, const char *end) {
     while (p < end) {
         // 一段目: パース + ハッシュ計算 + 表スロットのプリフェッチ。
         // 二段目が表を引く頃にはプリフェッチが届いており、「ハッシュ → 表ロード」の
-        // 直列依存鎖が行間で重なって L2 レイテンシが隠れる (05 で確立)
+        // 直列依存鎖が行間で重なって L2 レイテンシが隠れる
         int n = 0;
         while (n < BATCH && p < end) {
             p = parse_row(&rows[n], p);

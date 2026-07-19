@@ -87,11 +87,16 @@ pub fn build(b: *std.Build) void {
     gen_expected.step.dependOn(&gen.step);
     b.step("gen", "エッジケースの入力と期待出力を生成する").dependOn(&gen_expected.step);
 
-    // zig build release — 提出用バイナリ (musl 静的リンク) を作って制限を検査
+    // zig build release — 提出用バイナリを作って制限を検査。既定は musl 静的リンク。
+    // 本番で利用可能な libc6 (glibc) を動的リンクする版を試すため ABI を切り替えられる
+    // (例: -Drelease-abi=gnu.2.39)。glibc の memcpy/memchr は Sapphire Rapids で AVX-512 に
+    // IFUNC ディスパッチされる。musl と glibc の差は手元 (native=glibc) と本番 (musl) で
+    // 食い違う未計測項目なので、本番で決着させる
+    const release_abi = b.option([]const u8, "release-abi", "提出バイナリの ABI (既定: musl。glibc は gnu.2.XX)") orelse "musl";
     const release_query = std.Target.Query.parse(.{
-        .arch_os_abi = "x86_64-linux-musl",
+        .arch_os_abi = b.fmt("x86_64-linux-{s}", .{release_abi}),
         .cpu_features = release_cpu,
-    }) catch |err| std.debug.panic("-Drelease-cpu={s} を解釈できません: {t}", .{ release_cpu, err });
+    }) catch |err| std.debug.panic("-Drelease-abi/-Drelease-cpu を解釈できません: {t}", .{err});
     const release_target = b.resolveTargetQuery(release_query);
     const release_exe = addSolution(b, sol, source_path, release_target, .ReleaseFast, &c_flags);
     const install_release = b.addInstallArtifact(release_exe, .{

@@ -559,3 +559,14 @@ PGO は Zig 0.16 同梱 Clang 21 の `-fprofile-generate` を試したが、Zig 
 
 - edge・1m・10m・100m は期待出力と完全一致。UBSan・Sapphire Rapids release も通過。
 - 本番 Public 1B: accepted、**3.486 秒**。26 の 3.513 秒からブレの下振れ分だけ速く、最速値を更新した。速度差は機械語同一ゆえ実力ではないが、より堅牢な版を本命に据えられた。
+
+## musl 静的と glibc 動的を本番で比べて
+
+計測環境が使える共有ライブラリとして libc6・libgcc-s1・libstdc++6・zlib1g・libssl3・libyaml・libreadline・libffi・libgdbm を挙げているのに、我々は提出バイナリを musl で静的リンクし、これらを一切使っていなかった。平文 CSV を C で処理する我々に効き得るのは **glibc (libc6)** だけ — その `memcpy`・`memchr` は Sapphire Rapids で AVX-512 版に IFUNC ディスパッチされる。しかも我々の手元 bench は native = glibc、提出は musl 静的なので、**musl と glibc の差は手元と本番で食い違う未計測項目**だった。ホットパスは libc 呼び出しを持たないので効くとは限らないが、`malloc`・スタートアップ・コールドパスの `memchr`/`memcpy` で差が出る可能性があり、ソース無変更・ビルドターゲット変更だけで試せる。
+
+`build.zig` に ABI を切り替える `-Drelease-abi` を足し、`gnu.2.39` (本番 Ubuntu 26.04 の glibc より古く前方互換) で動的リンク版をビルドした。依存は `libc.so.6` のみ、手元で走る AVX2 版を実走させて 1m 出力一致も確認した。
+
+- 本番 Public 1B: accepted、**3.495 秒**。musl 版の 3.486 秒とはブレの範囲で、実質同着。
+- **ホットパスが libc 非依存という読みが裏付けられた**。libc の選択は速度に効かず、AVX-512 memcpy/memchr が効く余地はコールドパスしかなかった。
+
+速度が同着なので、選択は堅牢性で決めた。両者は robustness の軸を交換している: musl 静的は実行時依存ゼロで自己完結する一方、**glibc はスレッドスタックが桁違いに大きい** (glibc 8 MB 対 musl の既定 ~128 KB)。`renumber` は `order[10000]` (80 KB) と `perm[10000]` (40 KB) の計 120 KB をワーカースレッドのスタックに積むため、musl では余裕が薄い。ただしチャンネル数は最大 10,000 に保証で上限があり配列サイズは固定で、musl 提出が 1B で accepted になっている以上この余裕は実測で足りている。依存ゼロを優先し、最終提出は musl 静的の `robust` に据えた。真に両立させるならこの 120 KB をヒープか static へ移すのが正解だが、締切直前の投げ直しリスクを避け、上限保証と実測 accepted で安全と判断してそのままにした。
