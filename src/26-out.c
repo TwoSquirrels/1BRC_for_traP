@@ -226,9 +226,9 @@ HOT_INLINE const char *parse_row(Row *r, const char *p) {
         // stamp_count は 1 桁 95% + 2 桁でほぼ全部なので、2 桁までは乗算なし (cmov + lea)
         uint32_t digits = k2 - k1 - 1;
         uint32_t lo = (uint32_t)(w >> (8 * (k2 - 1))) & 0x0F;
+        MCA_END("numfast");
         uint32_t hi = digits >= 2 ? (uint32_t)(w >> (8 * (k2 - 2))) & 0x0F : 0;
         r->stamps = hi * 10 + lo;
-        MCA_END("numfast");
         if (__builtin_expect(digits > 2, 0)) {  // 3 桁以上だけ SWAR で引き直す
             r->stamps = swar10((w << (8 * (8 - k2))) & (~0ull << (8 * (8 - digits))) &
                                0x0F0F'0F0F'0F0F'0F0Full);

@@ -33,7 +33,7 @@ fn runInherit(io: std.Io, argv: []const []const u8) !u32 {
 
 const Function = struct {
     name: []const u8,
-    body_start: usize,  // 逆アセンブリ内の行オフセット
+    body_start: usize, // 逆アセンブリ内の行オフセット
     instructions: usize,
 };
 
@@ -127,8 +127,8 @@ pub fn main(init: std.process.Init) !u8 {
     // 2. アセンブリ生成 (提出ターゲットと同じ CPU 指定)
     const s_path = try std.fmt.allocPrint(alloc, "work/asm/{s}.s", .{sol});
     if (try runInherit(io, &.{
-        "zig", "cc", "-S", "-O3", "-std=c23", "-target", "x86_64-linux-musl",
-        "-march=sapphirerapids", "-DMCA_MARKERS", source, "-o", s_path,
+        "zig",                   "cc",            "-S",   "-O3", "-std=c23", "-target", "x86_64-linux-musl",
+        "-march=sapphirerapids", "-DMCA_MARKERS", source, "-o",  s_path,
     }) != 0) {
         std.debug.print("zig cc -S に失敗しました\n", .{});
         return 1;
@@ -141,7 +141,10 @@ pub fn main(init: std.process.Init) !u8 {
     const has_mca = if (runCapture(io, alloc, &.{ "llvm-mca", "--version" })) |_| true else |_| false;
     if (has_marker and has_mca) {
         std.debug.print("\n=== llvm-mca (-mcpu=sapphirerapids) ===\n", .{});
-        _ = try runInherit(io, &.{ "llvm-mca", "-mcpu=sapphirerapids", s_path });
+        if (try runInherit(io, &.{ "llvm-mca", "-mcpu=sapphirerapids", s_path }) != 0) {
+            std.debug.print("llvm-mca の解析に失敗しました\n", .{});
+            return 1;
+        }
     } else {
         if (!has_mca) {
             std.debug.print("llvm-mca が未導入です: sudo apt install llvm でサイクル見積もりが有効になります\n", .{});
