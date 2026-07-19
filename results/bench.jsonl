@@ -31,3 +31,15 @@
 {"time": "2026-07-18T22:17:31Z", "label": "09-numfast/100m", "times": [2.5415, 2.6414, 2.3396], "median": 2.5415, "input_bytes": 2629057896, "git": "2e7dde1a"}
 {"time": "2026-07-18T22:39:18Z", "label": "10-statprefetch/1m", "times": [0.1633, 0.1717, 0.1767], "median": 0.1717, "input_bytes": 26290086, "git": "2e7dde1a"}
 {"time": "2026-07-18T22:39:18Z", "label": "09-numfast/1m", "times": [0.1532, 0.1821, 0.1719], "median": 0.1719, "input_bytes": 26290086, "git": "2e7dde1a"}
+{"time": "2026-07-18T22:45:38Z", "label": "11-batch16/100m", "times": [3.1666, 2.1692, 2.5053], "median": 2.5053, "input_bytes": 2629057896, "git": "39eb39ba"}
+{"time": "2026-07-18T22:45:38Z", "label": "10-statprefetch/100m", "times": [2.4047, 2.6124, 2.3460], "median": 2.4047, "input_bytes": 2629057896, "git": "39eb39ba"}
+{"time": "2026-07-18T22:45:57Z", "label": "11-batch16/100m", "times": [2.0101, 2.0685, 2.1130], "median": 2.0685, "input_bytes": 2629057896, "git": "39eb39ba"}
+{"time": "2026-07-18T22:45:57Z", "label": "10-statprefetch/100m", "times": [2.0932, 2.0024, 2.2708], "median": 2.0932, "input_bytes": 2629057896, "git": "39eb39ba"}
+{"time": "2026-07-18T22:46:17Z", "label": "11-batch16/100m", "times": [2.0299, 2.1287, 2.1889], "median": 2.1287, "input_bytes": 2629057896, "git": "39eb39ba"}
+{"time": "2026-07-18T22:46:17Z", "label": "10-statprefetch/100m", "times": [2.0721, 2.1348, 2.2688], "median": 2.1348, "input_bytes": 2629057896, "git": "39eb39ba"}
+{"time": "2026-07-18T22:53:00Z", "label": "11-simdscan/100m", "times": [1.8227, 1.9211, 1.9902], "median": 1.9211, "input_bytes": 2629057896, "git": "39eb39ba"}
+{"time": "2026-07-18T22:53:00Z", "label": "10-statprefetch/100m", "times": [2.3170, 2.2055, 2.0588], "median": 2.2055, "input_bytes": 2629057896, "git": "39eb39ba"}
+{"time": "2026-07-18T22:53:14Z", "label": "11-simdscan/100m", "times": [2.0526, 2.0072, 2.1148], "median": 2.0526, "input_bytes": 2629057896, "git": "39eb39ba"}
+{"time": "2026-07-18T22:53:14Z", "label": "10-statprefetch/100m", "times": [2.1956, 2.2766, 2.3449], "median": 2.2766, "input_bytes": 2629057896, "git": "39eb39ba"}
+{"time": "2026-07-18T22:53:28Z", "label": "11-simdscan/100m", "times": [2.0369, 2.1129, 1.9101], "median": 2.0369, "input_bytes": 2629057896, "git": "39eb39ba"}
+{"time": "2026-07-18T22:53:28Z", "label": "10-statprefetch/100m", "times": [2.1071, 2.4653, 2.1156], "median": 2.1156, "input_bytes": 2629057896, "git": "39eb39ba"}
