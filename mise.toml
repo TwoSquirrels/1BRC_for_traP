@@ -47,3 +47,7 @@ run = "zig build download"
 [tasks.asm]
 description = "sapphirerapids 向けアセンブリを解析する"
 run = "zig build asm"
+
+[tasks.channels]
+description = "チャンネル分布 (種類数・頻度・名前長) を実測する"
+run = "zig build channels"

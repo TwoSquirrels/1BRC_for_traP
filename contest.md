@@ -78,6 +78,10 @@ channel_path,YYYY-MM=min_length/average_length/max_length/message_count/total_st
 | `message_count`     | メッセージ数                           |
 | `total_stamp_count` | スタンプ数の合計                       |
 
+`average_length` は、同じチャンネルと月に属する `message_length` の合計を `message_count` で割って求めます。合計と `message_count` を IEEE 754 の binary64 に変換し、最近接偶数丸めで除算します。得られた binary64 値を最近接偶数丸めで小数第 2 位までの固定小数点表記にし、小数部を必ず 2 桁で出力してください。
+
+この計算と出力は、C または C++ で丸めモードを既定値から変えずに `printf("%.2f", (double)total_length / message_count)` とした場合と同じ動作です。
+
 ### 出力例
 
 上の入力例を集計すると、次の 3 行を出力します。

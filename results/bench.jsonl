@@ -109,3 +109,15 @@
 {"time": "2026-07-19T05:39:48Z", "label": "17-renumber/100m", "times": [1.9958, 1.7945, 1.6884], "median": 1.7945, "input_bytes": 2629057896, "git": "157960a7"}
 {"time": "2026-07-19T05:52:30Z", "label": "22-dualstream/100m", "times": [1.9218, 1.7105, 1.8451], "median": 1.8451, "input_bytes": 2629057896, "git": "22755748"}
 {"time": "2026-07-19T05:52:30Z", "label": "17-renumber/100m", "times": [2.0347, 1.8193, 1.7041], "median": 1.8193, "input_bytes": 2629057896, "git": "22755748"}
+{"time": "2026-07-19T06:02:56Z", "label": "exp-blockscan/100m", "times": [2.1832, 2.1957, 2.0684], "median": 2.1832, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T06:02:56Z", "label": "17-renumber/100m", "times": [1.6760, 1.6261, 1.6127], "median": 1.6261, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T06:03:09Z", "label": "exp-blockscan/100m", "times": [2.1627, 2.0793, 2.2407], "median": 2.1627, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T06:03:09Z", "label": "17-renumber/100m", "times": [1.6673, 1.7063, 1.8589], "median": 1.7063, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T06:03:21Z", "label": "exp-blockscan/100m", "times": [2.1833, 2.1114, 2.2819], "median": 2.1833, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T06:03:21Z", "label": "17-renumber/100m", "times": [1.5903, 1.7485, 1.5607], "median": 1.5903, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T06:39:23Z", "label": "exp-shortname/100m", "times": [1.8357, 1.8215, 1.7205], "median": 1.8215, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T06:39:23Z", "label": "17-renumber/100m", "times": [1.5968, 1.5976, 1.5558], "median": 1.5968, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T06:47:02Z", "label": "exp-nta/100m", "times": [1.6532, 1.6502, 1.5354], "median": 1.6502, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T06:47:02Z", "label": "17-renumber/100m", "times": [1.6889, 1.5259, 1.6226], "median": 1.6226, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T07:00:42Z", "label": "24-populate/100m", "times": [1.6604, 2.3303, 2.0019], "median": 2.0019, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T07:00:42Z", "label": "17-renumber/100m", "times": [1.7480, 1.8038, 1.8197], "median": 1.8038, "input_bytes": 2629057896, "git": "746911b5"}

@@ -142,6 +142,14 @@ pub fn build(b: *std.Build) void {
     asm_run.addArtifactArg(release_exe);
     asm_run.has_side_effects = true;
     b.step("asm", "sapphirerapids 向けアセンブリを解析する").dependOn(&asm_run.step);
+
+    // zig build channels — 生データのチャンネル分布 (種類数・頻度・名前長) を実測する。
+    // 分布の仮定を実データで裏取りする用途 (-Ddata= でデータセットを選ぶ)
+    const channels_exe = addTool(b, "channels", target);
+    const channels = b.addRunArtifact(channels_exe);
+    channels.addArg(input_path);
+    channels.has_side_effects = true;
+    b.step("channels", "チャンネル分布を実測する").dependOn(&channels.step);
 }
 
 fn addSolution(

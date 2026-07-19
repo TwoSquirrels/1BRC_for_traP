@@ -48,6 +48,8 @@ mise run submit -- -Ddry       # 提出内容の確認 (dry-run)
 mise run submit                # release 検査を通してから API へ提出
 mise run leaderboard           # 現在の public リーダーボードを表示
 mise run status                # 自分の提出の判定状況を表示 (-Did=<uuid> で単体、-Dlimit で件数)
+mise run channels -- -Ddata=100m
+                               # 生データのチャンネル分布 (種類数・頻度・名前長) を実測
 mise run download              # 公開データセット (~100m) を datasets/ に取得・展開
 mise run asm                   # sapphirerapids の逆アセンブリを work/asm/ に保存し、関数一覧とホット関数を表示。サイクル見積もりも可能
 ```
