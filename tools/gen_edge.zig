@@ -24,6 +24,8 @@ const rows = [_]Row{
     .{ .ts = 1798761604, .channel = "edge/mid-numbers", .length = 9, .stamps = 999 },
     // 2 フィールド合計は 8 バイト超だが各フィールドは 7 桁以下 (個別 SWAR 一括パースの経路)
     .{ .ts = 1798761605, .channel = "edge/mid-numbers", .length = 123456, .stamps = 1234 },
+    // 2 フィールドが 8 バイト内に収まりつつ message_length が 4 桁以上 (低乗算経路の範囲外)
+    .{ .ts = 1798761605, .channel = "edge/mid-numbers", .length = 1234, .stamps = 5 },
     // SIMD 名前スキャンの一括幅の境界。AVX2 (手元) は 32 文字から、AVX-512 (提出) は
     // 64 文字からフォールバックの 8 B ループに落ちる
     .{ .ts = 1798761606, .channel = simd_boundary(31), .length = 1, .stamps = 0 },
