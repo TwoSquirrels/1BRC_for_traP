@@ -15,6 +15,9 @@
 - まず、手元での計測周りのツールを整備するところから始めるのがよさそう？
   - Claude Fable 5 に mise + Zig で整備してもらった。
 
+> [!NOTE]
+> ここから Written by Claude Fable 5
+
 ## 愚直を提出して
 
 - `tight` (`fgets` + `strtoll` の愚直集計を、制約ぴったりの固定配列にした版) が Public 1B で accepted。106.655 秒で 19 位 / 20 人。トップは 3.1 秒なので約 34 倍差。

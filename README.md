@@ -7,9 +7,11 @@
 - [`README.md`](README.md) - 目次
 - [`contest.md`](contest.md) - ルール
 - [`consideration.md`](consideration.md) - 考察
+- [`retrospective.md`](retrospective.md) - コンテスト結果と振り返り
 - [`AGENTS.md`](AGENTS.md) - AI エージェント向けの約束事 (`CLAUDE.md` はそのインポート)
 - `build.zig` - ビルド & タスクランナー定義
 - `src/` - ソリューション (1 ファイル = 1 ソリューション)
+- [`submissions/`](submissions/) - 全参加者の最終提出ソース (著作権は各参加者。運営公開 API から取得)
 - `tools/` - 検証・計測・生成ツール
 - `datasets/` - 公開データセット
 - `tests/` - 生成したエッジケースデータ
