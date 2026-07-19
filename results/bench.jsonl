@@ -121,3 +121,5 @@
 {"time": "2026-07-19T06:47:02Z", "label": "17-renumber/100m", "times": [1.6889, 1.5259, 1.6226], "median": 1.6226, "input_bytes": 2629057896, "git": "746911b5"}
 {"time": "2026-07-19T07:00:42Z", "label": "24-populate/100m", "times": [1.6604, 2.3303, 2.0019], "median": 2.0019, "input_bytes": 2629057896, "git": "746911b5"}
 {"time": "2026-07-19T07:00:42Z", "label": "17-renumber/100m", "times": [1.7480, 1.8038, 1.8197], "median": 1.8038, "input_bytes": 2629057896, "git": "746911b5"}
+{"time": "2026-07-19T07:14:19Z", "label": "exp-fuse/100m", "times": [3.2608, 2.4653, 2.4399], "median": 2.4653, "input_bytes": 2629057896, "git": "94c50ed9"}
+{"time": "2026-07-19T07:14:19Z", "label": "17-renumber/100m", "times": [2.9430, 2.3994, 2.3848], "median": 2.3994, "input_bytes": 2629057896, "git": "94c50ed9"}
