@@ -101,3 +101,9 @@
 {"time": "2026-07-19T05:24:17Z", "label": "17-renumber/100m", "times": [1.5260, 1.5145, 1.5115], "median": 1.5145, "input_bytes": 2629057896, "git": "6ba7dfe3"}
 {"time": "2026-07-19T05:24:26Z", "label": "exp-inpf/100m", "times": [1.5005, 1.5327, 1.3951], "median": 1.5005, "input_bytes": 2629057896, "git": "6ba7dfe3"}
 {"time": "2026-07-19T05:24:26Z", "label": "17-renumber/100m", "times": [1.5724, 1.5400, 1.6187], "median": 1.5724, "input_bytes": 2629057896, "git": "6ba7dfe3"}
+{"time": "2026-07-19T05:39:24Z", "label": "exp-batch32/100m", "times": [1.6256, 1.7488, 2.0666], "median": 1.7488, "input_bytes": 2629057896, "git": "157960a7"}
+{"time": "2026-07-19T05:39:24Z", "label": "17-renumber/100m", "times": [1.7652, 1.7872, 1.5759], "median": 1.7652, "input_bytes": 2629057896, "git": "157960a7"}
+{"time": "2026-07-19T05:39:36Z", "label": "exp-batch32/100m", "times": [1.8598, 2.2535, 1.6588], "median": 1.8598, "input_bytes": 2629057896, "git": "157960a7"}
+{"time": "2026-07-19T05:39:36Z", "label": "17-renumber/100m", "times": [2.2386, 1.9826, 1.5077], "median": 1.9826, "input_bytes": 2629057896, "git": "157960a7"}
+{"time": "2026-07-19T05:39:48Z", "label": "exp-batch32/100m", "times": [1.6405, 1.7739, 1.7905], "median": 1.7739, "input_bytes": 2629057896, "git": "157960a7"}
+{"time": "2026-07-19T05:39:48Z", "label": "17-renumber/100m", "times": [1.9958, 1.7945, 1.6884], "median": 1.7945, "input_bytes": 2629057896, "git": "157960a7"}
