@@ -85,3 +85,13 @@
 {"time": "2026-07-19T04:58:19Z", "label": "12-hotinline/100m", "times": [2.0815, 2.3282, 2.1091], "median": 2.1091, "input_bytes": 2629057896, "git": "af0f684c"}
 {"time": "2026-07-19T04:58:33Z", "label": "exp-mid8/100m", "times": [2.0845, 2.0896, 2.0792], "median": 2.0845, "input_bytes": 2629057896, "git": "af0f684c"}
 {"time": "2026-07-19T04:58:33Z", "label": "12-hotinline/100m", "times": [2.3896, 2.0614, 2.1330], "median": 2.1330, "input_bytes": 2629057896, "git": "af0f684c"}
+{"time": "2026-07-19T05:12:54Z", "label": "exp-renumber/100m", "times": [1.7578, 1.6946, 1.9452], "median": 1.7578, "input_bytes": 2629057896, "git": "4e787c43"}
+{"time": "2026-07-19T05:12:54Z", "label": "15-batch16/100m", "times": [1.7886, 1.8080, 1.7056], "median": 1.7886, "input_bytes": 2629057896, "git": "4e787c43"}
+{"time": "2026-07-19T05:13:05Z", "label": "exp-renumber/100m", "times": [1.6164, 1.9354, 1.7101], "median": 1.7101, "input_bytes": 2629057896, "git": "4e787c43"}
+{"time": "2026-07-19T05:13:05Z", "label": "15-batch16/100m", "times": [1.7645, 1.7833, 1.6787], "median": 1.7645, "input_bytes": 2629057896, "git": "4e787c43"}
+{"time": "2026-07-19T05:13:16Z", "label": "exp-renumber/100m", "times": [2.0193, 1.9209, 1.6601], "median": 1.9209, "input_bytes": 2629057896, "git": "4e787c43"}
+{"time": "2026-07-19T05:13:16Z", "label": "15-batch16/100m", "times": [1.4885, 1.5084, 1.9776], "median": 1.5084, "input_bytes": 2629057896, "git": "4e787c43"}
+{"time": "2026-07-19T05:13:41Z", "label": "exp-renumber/100m", "times": [1.7748, 1.5216, 1.5738], "median": 1.5738, "input_bytes": 2629057896, "git": "4e787c43"}
+{"time": "2026-07-19T05:13:41Z", "label": "15-batch16/100m", "times": [1.5741, 1.5302, 1.6872], "median": 1.5741, "input_bytes": 2629057896, "git": "4e787c43"}
+{"time": "2026-07-19T05:13:51Z", "label": "exp-renumber/100m", "times": [1.6273, 1.4710, 1.5233], "median": 1.5233, "input_bytes": 2629057896, "git": "4e787c43"}
+{"time": "2026-07-19T05:13:51Z", "label": "15-batch16/100m", "times": [1.5691, 1.7032, 1.6143], "median": 1.6143, "input_bytes": 2629057896, "git": "4e787c43"}
