@@ -77,3 +77,11 @@
 {"time": "2026-07-19T04:35:01Z", "label": "11-simdscan/100m", "times": [1.6752, 1.7513, 1.4986], "median": 1.6752, "input_bytes": 2629057896, "git": "14a96343"}
 {"time": "2026-07-19T04:35:12Z", "label": "exp-inline/100m", "times": [1.4400, 1.8213, 1.6607], "median": 1.6607, "input_bytes": 2629057896, "git": "14a96343"}
 {"time": "2026-07-19T04:35:12Z", "label": "11-simdscan/100m", "times": [1.5306, 1.9632, 1.7926], "median": 1.7926, "input_bytes": 2629057896, "git": "14a96343"}
+{"time": "2026-07-19T04:57:40Z", "label": "exp-mid8/100m", "times": [2.1110, 2.3179, 2.3194], "median": 2.3179, "input_bytes": 2629057896, "git": "af0f684c"}
+{"time": "2026-07-19T04:57:40Z", "label": "12-hotinline/100m", "times": [2.1664, 2.3286, 2.2585], "median": 2.2585, "input_bytes": 2629057896, "git": "af0f684c"}
+{"time": "2026-07-19T04:58:05Z", "label": "exp-mid8/100m", "times": [2.2934, 2.1191, 2.0560], "median": 2.1191, "input_bytes": 2629057896, "git": "af0f684c"}
+{"time": "2026-07-19T04:58:05Z", "label": "12-hotinline/100m", "times": [2.3523, 2.1897, 2.2838], "median": 2.2838, "input_bytes": 2629057896, "git": "af0f684c"}
+{"time": "2026-07-19T04:58:19Z", "label": "exp-mid8/100m", "times": [2.0048, 2.4469, 1.8861], "median": 2.0048, "input_bytes": 2629057896, "git": "af0f684c"}
+{"time": "2026-07-19T04:58:19Z", "label": "12-hotinline/100m", "times": [2.0815, 2.3282, 2.1091], "median": 2.1091, "input_bytes": 2629057896, "git": "af0f684c"}
+{"time": "2026-07-19T04:58:33Z", "label": "exp-mid8/100m", "times": [2.0845, 2.0896, 2.0792], "median": 2.0845, "input_bytes": 2629057896, "git": "af0f684c"}
+{"time": "2026-07-19T04:58:33Z", "label": "12-hotinline/100m", "times": [2.3896, 2.0614, 2.1330], "median": 2.1330, "input_bytes": 2629057896, "git": "af0f684c"}
